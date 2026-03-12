@@ -1,0 +1,37 @@
+name: nest-api
+region: nyc3
+services:
+  - name: api
+    source_dir: api
+    environment_slug: node-js
+    instance_size_slug: basic-xs
+    instance_count: 1
+    http_port: 8080
+    routes:
+      - path: /
+    envs:
+      - key: NODE_ENV
+        value: production
+        scope: RUN_AND_BUILD
+      - key: PORT
+        value: "8080"
+        scope: RUN_AND_BUILD
+      - key: DATABASE_URL
+        scope: RUN_TIME
+        type: SECRET
+      - key: DB_SSL
+        value: "true"
+        scope: RUN_TIME
+    build_command: |
+      yarn install --frozen-lockfile
+      yarn build
+    run_command: node dist/main.js
+    health_check:
+      http_path: /health
+      initial_delay_seconds: 10
+      period_seconds: 10
+      timeout_seconds: 5
+      success_threshold: 1
+      failure_threshold: 3
+    postdeploy:
+      command: yarn migrate

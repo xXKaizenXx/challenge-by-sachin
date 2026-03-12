@@ -1,0 +1,50 @@
+name: Core Banking Dev
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Create .env file (development)
+        run: |
+          cat > .env <<'EOF'
+          NODE_ENV=development
+          SERVER_PORT=9000
+
+          DB_HOST=${{ secrets.DB_HOST }}
+          DB_PORT=${{ secrets.DB_PORT }}
+          DB_USER=${{ secrets.DB_USER }}
+          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          DB_NAME=${{ secrets.DB_NAME }}
+
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
+
+          SMTP_HOST=${{ secrets.SMTP_HOST }}
+          SMTP_PORT=${{ secrets.SMTP_PORT }}
+          SMTP_SECURE=${{ secrets.SMTP_SECURE }}
+          SMTP_REQUIRE_TLS=${{ secrets.SMTP_REQUIRE_TLS }}
+          SMTP_EMAIL=${{ secrets.SMTP_EMAIL }}
+          SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}
+          MAIL_FROM=${{ secrets.MAIL_FROM }}
+
+          SESSION_EXPIRY=3600
+          EOF
+      - run: yarn
+      - run: yarn build
+      - run: yarn migration:run

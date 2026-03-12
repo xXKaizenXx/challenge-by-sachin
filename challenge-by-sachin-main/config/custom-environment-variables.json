@@ -1,0 +1,29 @@
+{
+  "server": { "port": "SERVER_PORT" },
+  "db": {
+    "username": "DB_USER",
+    "password": "DB_PASSWORD",
+    "host": "DB_HOST",
+    "port": "DB_PORT",
+    "database": "DB_NAME",
+    "env": "NODE_ENV"
+  },
+  "jwt": {
+    "secret": "JWT_SECRET",
+    "private_key": "JWT_PRIVATE_KEY",
+    "public_key": "JWT_PUBLIC_KEY"
+  },
+  "mail": {
+    "host": "SMTP_HOST",
+    "port": "SMTP_PORT",
+    "secure": "SMTP_SECURE",
+    "require_tls": "SMTP_REQUIRE_TLS",
+    "smtp_email": "SMTP_EMAIL",
+    "smtp_password": "SMTP_PASSWORD",
+    "from": "MAIL_FROM"
+  },
+  "Session": {
+    "secret": "SESSION_SECRET",
+    "expiry": "SESSION_EXPIRY"
+  }
+}

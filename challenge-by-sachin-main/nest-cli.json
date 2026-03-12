@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "builder": "swc"
+  },
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "src"
+}
